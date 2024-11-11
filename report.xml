@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sales_data date="2024-11-10">
+  <products>
+    <product>
+      <name>Product A</name>
+      <quantity>100</quantity>
+      <price>1500.0</price>
+      <category>Electronics</category>
+    </product>
+    <product>
+      <name>Product B</name>
+      <quantity>150</quantity>
+      <price>1200.0</price>
+      <category>Electronics</category>
+    </product>
+  </products>
+</sales_data>

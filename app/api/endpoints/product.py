@@ -1,4 +1,3 @@
-from datetime import datetime
 from http import HTTPStatus
 
 from fastapi import APIRouter, Depends, HTTPException, Response
@@ -12,7 +11,7 @@ from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductDB
 from app.services.xml import generate_xml
 
-router = APIRouter(prefix='/product', tags=['Product'])
+router = APIRouter()
 
 
 @router.post(
@@ -24,6 +23,9 @@ async def create_new_product(
     product: ProductCreate,
     session: AsyncSession = Depends(get_session),
 ):
+    '''
+    Создает новый продукт.
+    '''
     room_id = await get_product_by_name(product.name, session)
     match room_id:
         case None:
@@ -44,6 +46,9 @@ async def create_new_product(
 async def get_all_products(
     session: AsyncSession = Depends(get_session)
 ):
+    '''
+    Возвращает список продуктов.
+    '''
     products = await read_all_products(session)
     return products
 
@@ -56,6 +61,9 @@ async def get_all_products(
 async def get_product_report(
     session: AsyncSession = Depends(get_session)
 ):
+    '''
+    Генерирует отчет о продуктах.
+    '''
     try:
         products = await read_all_products(session)
         if products is None:
@@ -98,6 +106,9 @@ async def remove_product(
     product_id: int,
     session: AsyncSession = Depends(get_session)
 ):
+    '''
+    Удаляет продукт.
+    '''
     product = await check_product_exists(product_id, session)
     await delete_product(product, session)
     return product
@@ -107,6 +118,9 @@ async def check_product_exists(
         product_name: str,
         session: AsyncSession,
 ) -> Product:
+    '''
+    Проверяет существование продукта в базе данных.
+    '''
     product = await get_product_by_id(product_name, session)
     match product:
         case None:

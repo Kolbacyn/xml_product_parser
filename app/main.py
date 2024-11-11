@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api.product import router
+from app.api.routers import main_router
 from app.core.config import settings
 
 app = FastAPI(
@@ -8,4 +8,4 @@ app = FastAPI(
     version=settings.app_version
 )
 
-app.include_router(router)
+app.include_router(main_router)
