@@ -1,6 +1,4 @@
-from http import HTTPStatus
-
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_session
@@ -10,6 +8,8 @@ from app.crud.product import (create_product, delete_product,
 from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductDB
 from app.services.xml import generate_xml
+from app.services import constants
+from app.services import exceptions
 
 router = APIRouter()
 
@@ -32,8 +32,7 @@ async def create_new_product(
             new_product = await create_product(product, session)
             return new_product
         case _:
-            raise HTTPException(
-                status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
+            raise exceptions.UnprocessableEntityException(
                 detail='Продукт с таким именем уже существует'
             )
 
@@ -69,33 +68,27 @@ async def get_product_report(
 
         match products:
             case None:
-                raise HTTPException(
-                    status_code=HTTPStatus.NO_CONTENT,
-                    detail='Продукт не найден'
+                raise exceptions.NoContentException(
+                    detail='В базе данных нет продуктов'
                 )
 
         await generate_xml(products)
-        with open('report.xml', 'r') as file:
+        with open(constants.XML_FILE, 'r') as file:
             xml_data = file.read()
 
         match xml_data:
             case None:
-                raise HTTPException(
-                    status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+                raise exceptions.InternalServerException(
                     detail='Возникла ошибка во время записи отчета'
                 )
         return Response(content=xml_data, media_type="application/xml")
 
     except FileNotFoundError:
-        raise HTTPException(
-            status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+        raise exceptions.InternalServerException(
             detail='Произошла ошибка во время генерации отчета'
         )
     except Exception as e:
-        raise HTTPException(
-            status_code=HTTPStatus.BAD_REQUEST,
-            detail=str(e)
-        )
+        raise exceptions.BadRequestException(detail=str(e))
 
 
 @router.delete(
@@ -110,13 +103,7 @@ async def remove_product(
     '''
     Удаляет продукт.
     '''
-    try:
-        product = await check_product_exists(product_id, session)
-    except HTTPException:
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
-            detail='Продукт не найден'
-        )
+    product = await check_product_exists(product_id, session)
     await delete_product(product, session)
     return product
 
@@ -131,9 +118,6 @@ async def check_product_exists(
     product = await get_product_by_id(product_name, session)
     match product:
         case None:
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND,
-                detail='Продукт не найден'
-            )
+            raise exceptions.NotFoundException(detail='Продукт не найден')
         case _:
             return product

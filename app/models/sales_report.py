@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String
 
 from app.core.db import Base
+from app.services.constants import Numerics
 
 
 class SalesReport(Base):
@@ -8,5 +9,5 @@ class SalesReport(Base):
     __tablename__ = 'sales_reports'
 
     id = Column(Integer, primary_key=True)
-    report = Column(String(1000), nullable=False)
-    date = Column(String(255), nullable=False)
+    report = Column(String(Numerics.ANALYTICS_LENGTH), nullable=False)
+    date = Column(String(Numerics.DATE_LENGTH), nullable=False)

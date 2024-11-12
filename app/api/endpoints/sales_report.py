@@ -6,6 +6,7 @@ from app.core.config import settings
 from app.core.db import get_session
 from app.crud.sales_report import create_sales_report, get_sales_report_by_date
 from app.schemas.sales_report import SalesReportCreate, SalesReportDB
+from app.services import constants
 from app.services.xml import generate_prompt
 
 
@@ -32,8 +33,8 @@ async def ask_claude(
         base_url='https://api.proxyapi.ru/openai/v1'
     )
     message = client.chat.completions.create(
-        model='gpt-3.5-turbo',
-        max_tokens=500,
+        model=constants.LLL_MODEL,
+        max_tokens=constants.TOKENS_QUANTITY,
         messages=[
             {'role': 'user', 'content': prompt}
         ]

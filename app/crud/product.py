@@ -11,6 +11,7 @@ async def create_product(
         new_product: ProductCreate,
         session: AsyncSession
 ) -> Product:
+    '''Создает новый продукт.'''
     new_product_data = new_product.model_dump()
     product = Product(**new_product_data)
     session.add(product)
@@ -23,6 +24,7 @@ async def get_product_by_name(
         product_name: str,
         session: AsyncSession,
 ) -> Product:
+    '''Возвращает продукт по его имени.'''
     product = await session.execute(
         select(Product.id).where(Product.name == product_name)
     )
@@ -33,6 +35,7 @@ async def get_product_by_name(
 async def read_all_products(
         session: AsyncSession
 ) -> list[Product]:
+    '''Возвращает список всех продуктов.'''
     products = await session.execute(select(Product))
     return products.scalars().all()
 
@@ -41,6 +44,7 @@ async def get_product_by_id(
         product_id: int,
         session: AsyncSession,
 ) -> Optional[Product]:
+    '''Возвращает продукт по его id.'''
     product = await session.execute(
         select(Product).where(Product.id == product_id)
     )
@@ -51,6 +55,7 @@ async def delete_product(
         product: Product,
         session: AsyncSession
 ) -> ProductDB:
+    '''Удаляет продукт.'''
     await session.delete(product)
     await session.commit()
     return product
