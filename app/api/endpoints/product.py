@@ -34,7 +34,7 @@ async def create_new_product(
         case _:
             raise HTTPException(
                 status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-                detail='Product already exists'
+                detail='Продукт с таким именем уже существует'
             )
 
 
@@ -66,29 +66,30 @@ async def get_product_report(
     '''
     try:
         products = await read_all_products(session)
-        if products is None:
-            raise HTTPException(
-                status_code=HTTPStatus.NO_CONTENT,
-                detail='No products found'
-            )
-        if not products:
-            raise HTTPException(
-                status_code=HTTPStatus.NO_CONTENT,
-                detail='No products found'
-            )
+
+        match products:
+            case None:
+                raise HTTPException(
+                    status_code=HTTPStatus.NO_CONTENT,
+                    detail='Продукт не найден'
+                )
+
         await generate_xml(products)
         with open('report.xml', 'r') as file:
             xml_data = file.read()
-        if xml_data is None:
-            raise HTTPException(
-                status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
-                detail='Failed to generate the report'
-            )
+
+        match xml_data:
+            case None:
+                raise HTTPException(
+                    status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
+                    detail='Возникла ошибка во время записи отчета'
+                )
         return Response(content=xml_data, media_type="application/xml")
+
     except FileNotFoundError:
         raise HTTPException(
             status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
-            detail='Failed to generate the report'
+            detail='Произошла ошибка во время генерации отчета'
         )
     except Exception as e:
         raise HTTPException(
@@ -109,7 +110,13 @@ async def remove_product(
     '''
     Удаляет продукт.
     '''
-    product = await check_product_exists(product_id, session)
+    try:
+        product = await check_product_exists(product_id, session)
+    except HTTPException:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail='Продукт не найден'
+        )
     await delete_product(product, session)
     return product
 
@@ -126,7 +133,7 @@ async def check_product_exists(
         case None:
             raise HTTPException(
                 status_code=HTTPStatus.NOT_FOUND,
-                detail='Product not found'
+                detail='Продукт не найден'
             )
         case _:
             return product
