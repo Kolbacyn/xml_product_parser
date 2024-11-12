@@ -6,7 +6,7 @@
 
 ## xml_product_parser
 
-![Workflow](https://github.com/Kolbacyn/xml_product_parser/actions/workflows/scrapy_workflow.yml/badge.svg?event=push)
+![Workflow](https://github.com/Kolbacyn/xml_product_parser/actions/workflows/workflow.yml/badge.svg?event=push)
 
 ## Описание:
 
