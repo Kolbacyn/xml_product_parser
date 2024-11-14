@@ -22,4 +22,4 @@ class ProductDB(ProductCreate):
     id: PositiveInt
 
     class Config:
-        orm_mode = True
+        from_attribute = True

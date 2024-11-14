@@ -7,7 +7,7 @@ from app.core.db import get_session
 from app.crud.sales_report import create_sales_report, get_sales_report_by_date
 from app.schemas.sales_report import SalesReportCreate, SalesReportDB
 from app.services import constants
-from app.services.xml import generate_prompt
+from app.services.xml import generate_prompt, get_current_date
 
 
 router = APIRouter()
@@ -20,7 +20,7 @@ OPENAI_API_URL = settings.openai_api_url
         '/generate_analytics',
         response_model=SalesReportCreate,
         response_model_exclude_unset=True)
-async def ask_claude(
+async def ask_neuro(
     request: Request,
     session: AsyncSession = Depends(get_session)
 ):
@@ -41,7 +41,7 @@ async def ask_claude(
     )
     report = message.choices[0].message.content
     await create_sales_report(report, session)
-    return report
+    return SalesReportCreate(report=report, date=await get_current_date())
 
 
 @router.get(

@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float
 
 from app.core.db import Base
-from app.services.constants import Numerics
 
 
 class Product(Base):
@@ -10,7 +9,7 @@ class Product(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(
-        Numerics.PRODUCT_NAME_LENGTH),
+        255),
         unique=True,
         nullable=False
     )
