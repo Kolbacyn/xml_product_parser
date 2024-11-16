@@ -11,7 +11,7 @@ async def create_sales_report(
         session: AsyncSession
 ) -> SalesReport:
     '''Создает новый отчет о продажах.'''
-    report_date = await get_current_date()
+    report_date = get_current_date()
 
     sales_report = SalesReport(
         report=report,

@@ -7,7 +7,7 @@ async def generate_xml(products: list[dict]):
     '''
     Генерирует XML-файл с данными о продажах.
     '''
-    root = ET.Element('sales_data', date=await get_current_date())
+    root = ET.Element('sales_data', date=get_current_date())
     products_element = ET.SubElement(root, 'products')
 
     for product_data in products:
@@ -82,7 +82,7 @@ def generate_prompt():
     return prompt
 
 
-async def get_current_date():
+def get_current_date():
     '''
     Возвращает текущую дату в формате YYYY-MM-DD.
     '''

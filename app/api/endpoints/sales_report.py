@@ -41,7 +41,7 @@ async def ask_neuro(
     )
     report = message.choices[0].message.content
     await create_sales_report(report, session)
-    return SalesReportCreate(report=report, date=await get_current_date())
+    return SalesReportCreate(report=report, date=get_current_date())
 
 
 @router.get(
