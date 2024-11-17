@@ -1,31 +1,31 @@
 from datetime import datetime
 
-import lxml.etree as ET
+import lxml.etree as et
 
 
 async def generate_xml(products: list[dict]):
     '''
     Генерирует XML-файл с данными о продажах.
     '''
-    root = ET.Element('sales_data', date=get_current_date())
-    products_element = ET.SubElement(root, 'products')
+    root = et.Element('sales_data', date=get_current_date())
+    products_element = et.SubElement(root, 'products')
 
     for product_data in products:
-        product_element = ET.SubElement(products_element, 'product')
-        ET.SubElement(
+        product_element = et.SubElement(products_element, 'product')
+        et.SubElement(
             product_element,
             'name').text = product_data.name
-        ET.SubElement(
+        et.SubElement(
             product_element,
             'quantity').text = str(product_data.quantity)
-        ET.SubElement(
+        et.SubElement(
             product_element,
             'price').text = str(product_data.price)
-        ET.SubElement(
+        et.SubElement(
             product_element,
             'category').text = product_data.category
 
-    tree = ET.ElementTree(root)
+    tree = et.ElementTree(root)
     tree.write(
         'report.xml',
         encoding='utf-8',
@@ -39,7 +39,7 @@ def generate_prompt():
     Генерирует промпт для нейросети на основе XML-файла с данными о продажах.
     '''
     xml_file = 'report.xml'
-    tree = ET.parse(xml_file)
+    tree = et.parse(xml_file)
     root = tree.getroot()
 
     date = root.get('date')

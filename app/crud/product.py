@@ -29,8 +29,7 @@ async def get_product_by_name(
     product = await session.execute(
         select(Product.id).where(Product.name == product_name)
     )
-    product_id = product.scalars().first()
-    return product_id
+    return product.scalars().first()
 
 
 async def read_all_products(
@@ -75,3 +74,4 @@ async def check_product_exists(
             raise exceptions.NotFoundException(detail='Продукт не найден')
         case _:
             return product
+    return

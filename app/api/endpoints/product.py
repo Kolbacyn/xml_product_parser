@@ -6,9 +6,9 @@ from app.crud.product import (check_product_exists, create_product,
                               delete_product, get_product_by_name,
                               read_all_products)
 from app.schemas.product import ProductCreate, ProductDB
-from app.services.xml import generate_xml
 from app.services import constants
 from app.services import exceptions
+from app.services.xml import generate_xml
 
 router = APIRouter()
 
@@ -25,11 +25,9 @@ async def create_new_product(
     '''
     Создает новый продукт.
     '''
-    room_id = await get_product_by_name(product.name, session)
-    match room_id:
+    match await get_product_by_name(product.name, session):
         case None:
-            new_product = await create_product(product, session)
-            return new_product
+            return await create_product(product, session)
         case _:
             raise exceptions.UnprocessableEntityException(
                 detail='Продукт с таким именем уже существует'
@@ -47,8 +45,7 @@ async def get_all_products(
     '''
     Возвращает список продуктов.
     '''
-    products = await read_all_products(session)
-    return products
+    return await read_all_products(session)
 
 
 @router.get(
@@ -105,5 +102,3 @@ async def remove_product(
     product = await check_product_exists(product_id, session)
     await delete_product(product, session)
     return product
-
-

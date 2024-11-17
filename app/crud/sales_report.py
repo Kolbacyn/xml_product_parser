@@ -3,7 +3,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.sales_report import SalesReport
 from app.schemas.sales_report import SalesReportCreate, SalesReportDB
-from app.services import exceptions
 from app.services.xml import get_current_date
 
 
