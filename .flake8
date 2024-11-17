@@ -1,5 +1,6 @@
 [flake8]
+ignore = R502, R503, R504
 exclude = 
    migrations,
-   app.core.base
+   app/core/base.py
    
