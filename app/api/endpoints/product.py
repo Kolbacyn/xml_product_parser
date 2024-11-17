@@ -6,8 +6,7 @@ from app.crud.product import (check_product_exists, create_product,
                               delete_product, get_product_by_name,
                               read_all_products)
 from app.schemas.product import ProductCreate, ProductDB
-from app.services import constants
-from app.services import exceptions
+from app.services import constants, exceptions
 from app.services.xml import generate_xml
 
 router = APIRouter()

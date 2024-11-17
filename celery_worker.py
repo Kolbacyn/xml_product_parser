@@ -2,7 +2,6 @@ import asyncio
 
 from celery import Celery
 from celery.schedules import crontab
-
 import openai
 
 from app.api.endpoints.sales_report import generate_prompt, get_current_date

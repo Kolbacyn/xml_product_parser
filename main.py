@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+from app.api.routers import main_router
+from app.core.config import settings
 
+app = FastAPI(title=settings.app_title)
 
-@app.get("/") 
-async def root():
-    return {"message": "Hello World"}
+app.include_router(main_router)
