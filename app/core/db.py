@@ -23,5 +23,8 @@ AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession)
 
 
 async def get_session():
+    '''
+    Функция для получения сессии.
+    '''
     async with AsyncSessionLocal() as session:
         yield session

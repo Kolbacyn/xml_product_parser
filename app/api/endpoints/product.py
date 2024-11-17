@@ -2,10 +2,9 @@ from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_session
-from app.crud.product import (create_product, delete_product,
-                              get_product_by_id, get_product_by_name,
+from app.crud.product import (check_product_exists, create_product,
+                              delete_product, get_product_by_name,
                               read_all_products)
-from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductDB
 from app.services.xml import generate_xml
 from app.services import constants
@@ -108,16 +107,3 @@ async def remove_product(
     return product
 
 
-async def check_product_exists(
-        product_name: str,
-        session: AsyncSession,
-) -> Product:
-    '''
-    Проверяет существование продукта в базе данных.
-    '''
-    product = await get_product_by_id(product_name, session)
-    match product:
-        case None:
-            raise exceptions.NotFoundException(detail='Продукт не найден')
-        case _:
-            return product

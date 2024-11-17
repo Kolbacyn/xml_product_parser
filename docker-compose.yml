@@ -43,21 +43,6 @@ services:
     depends_on:
       - app
       - redis
-  
-  # flower:
-  #   container_name: flower
-  #   build: .
-  #   ports:
-  #     - "5556:5555"
-  #   command:
-  #     - "celery"
-  #     - "--broker=redis://redis:6379/0"
-  #     - "flower"
-  #     - "--broker_api=redis://redis:6379/0"
-  #   depends_on:
-  #     - app
-  #     - redis
-  #     - celery_worker
 
 volumes:
   pgdata:

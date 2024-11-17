@@ -11,32 +11,36 @@ from app.core.db import AsyncSessionLocal
 from app.models.sales_report import SalesReport
 from app.schemas.sales_report import SalesReportCreate
 from app.services import constants
+from app.services.constants import Numerics
 
 celery = Celery(__name__)
 celery.conf.broker_url = settings.celery_broker_url
 celery.conf.result_backend = settings.celery_result_backend
-celery.conf.timezone = 'Europe/Moscow'
+celery.conf.timezone = constants.TIMEZONE
 celery.conf.broker_connection_retry_on_startup = True
 celery.conf.beat_schedule = {
     'everyday_task': {
         'task': 'celery_worker.generate_daily_analytics',
-        'schedule': crontab(hour=13, minute=12)
+        'schedule': crontab(
+            hour=Numerics.TASK_HOURS,
+            minute=Numerics.TASK_MINUTES
+        ),
     }
 }
 
 
 @celery.task
 def generate_daily_analytics():
-    """
+    '''
     Функция, выполняемая Celery раз в сутки.
-    """
+    '''
     asyncio.run(async_task())
 
 
 async def async_task():
-    """
+    '''
     Асинхронная функция для передачи в задачи Celery.
-    """
+    '''
     prompt = generate_prompt()
     match prompt:
         case None:

@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.product import Product
 from app.schemas.product import ProductCreate, ProductDB
+from app.services import exceptions
 
 
 async def create_product(
@@ -59,3 +60,18 @@ async def delete_product(
     await session.delete(product)
     await session.commit()
     return product
+
+
+async def check_product_exists(
+        product_name: str,
+        session: AsyncSession,
+) -> Product:
+    '''
+    Проверяет существование продукта в базе данных.
+    '''
+    product = await get_product_by_id(product_name, session)
+    match product:
+        case None:
+            raise exceptions.NotFoundException(detail='Продукт не найден')
+        case _:
+            return product

@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 from app.core.db import get_session
 from app.crud.sales_report import create_sales_report, get_sales_report_by_date
+
 from app.schemas.sales_report import SalesReportCreate, SalesReportDB
 from app.services import constants
 from app.services.xml import generate_prompt, get_current_date
@@ -13,7 +14,6 @@ from app.services.xml import generate_prompt, get_current_date
 router = APIRouter()
 
 OPENAI_API_KEY = settings.openai_api_key
-OPENAI_API_URL = settings.openai_api_url
 
 
 @router.post(
