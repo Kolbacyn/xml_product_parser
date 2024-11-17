@@ -13,9 +13,9 @@ router = APIRouter()
 
 
 @router.post(
-        '/',
-        response_model=ProductDB,
-        response_model_exclude_none=True
+    '/',
+    response_model=ProductDB,
+    response_model_exclude_none=True
 )
 async def create_new_product(
     product: ProductCreate,

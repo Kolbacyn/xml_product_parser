@@ -15,9 +15,9 @@ OPENAI_API_KEY = settings.openai_api_key
 
 
 @router.post(
-        '/generate_analytics',
-        response_model=SalesReportCreate,
-        response_model_exclude_unset=True)
+    '/generate_analytics',
+    response_model=SalesReportCreate,
+    response_model_exclude_unset=True)
 async def ask_neuro(
     session: AsyncSession = Depends(get_session)
 ):
@@ -42,9 +42,9 @@ async def ask_neuro(
 
 
 @router.get(
-        '/{report_date}',
-        response_model=SalesReportDB,
-        response_model_exclude_unset=True
+    '/{report_date}',
+    response_model=SalesReportDB,
+    response_model_exclude_unset=True
 )
 async def get_report_by_date(
     report_date: str,
