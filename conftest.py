@@ -9,7 +9,8 @@ from sqlalchemy.orm import sessionmaker
 
 from app.core.db import Base
 
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+BASE_DIR = Path(__file__).resolve(strict=True).parent
+print(BASE_DIR)
 
 pytest_plugins = [
     'tests.fixtures.user',
