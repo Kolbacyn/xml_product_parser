@@ -7,22 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-try:
-    from app.main import app  # noqa
-except (NameError, ImportError) as error:
-    raise AssertionError(
-        'При импорте объекта приложения `app` из модуля `app.main` '
-        f'возникло исключение:\n{type(error).__name__}: {error}.'
-    )
+from app.core.db import Base
 
-try:
-    from app.core.db import Base, get_session  # noqa
-except (NameError, ImportError) as error:
-    raise AssertionError(
-        'При импорте объектов `Base, get_session` '
-        'из модуля `app.core.db` возникло исключение:\n'
-        f'{type(error).__name__}: {error}.'
-    )
 
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
