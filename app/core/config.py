@@ -4,16 +4,16 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     app_title: str = 'App title'
     app_version: str = '1.0.0'
-    database_url: str
-    postgres_db: str
-    postgres_user: str
-    postgres_password: str
-    db_host: str
-    db_port: int
-    openai_api_key: str
-    openai_api_url: str
-    celery_broker_url: str
-    celery_result_backend: str
+    database_url: str = 'postgresql+asyncpg://postgres:postgres@db:5432/fastap'
+    postgres_db: str = 'fastapi'
+    postgres_user: str = 'postgres'
+    postgres_password: str = 'postgres'
+    db_host: str = 'db'
+    db_port: int = 5432
+    openai_api_key: str = 'Ваш ключ доступа к APi'
+    openai_api_url: str = 'https://openapi'
+    celery_broker_url: str = 'redis://guest:guest@localhost:6379'
+    celery_result_backend: str = 'redis://guest:guest@localhost:6379'
 
     class Config:
         env_file = '.env'
