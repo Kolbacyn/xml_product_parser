@@ -8,9 +8,9 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.core.db import Base
-from app.core.config import Settings
 
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+BASE_DIR = Path(__file__).resolve(strict=True).parent
+print(BASE_DIR)
 
 pytest_plugins = [
     'tests.fixtures.user',
@@ -18,10 +18,7 @@ pytest_plugins = [
 ]
 
 TEST_DB = BASE_DIR / 'test.db'
-SQLALCHEMY_DATABASE_URL = (f'postgresql+asyncpg://'
-                           f'{str(TEST_DB)}{Settings.postgres_user}:'
-                           f'{Settings.postgres_password}@{Settings.db_host}:'
-                           f'{Settings.db_port}/{Settings.postgres_db}')
+SQLALCHEMY_DATABASE_URL = f'sqlite+aiosqlite:///{str(TEST_DB)}'
 engine = create_async_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args={'check_same_thread': False},
