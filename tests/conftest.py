@@ -9,7 +9,6 @@ from sqlalchemy.orm import sessionmaker
 
 from app.core.db import Base
 
-
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 pytest_plugins = [

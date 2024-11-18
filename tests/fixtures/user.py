@@ -1,7 +1,10 @@
 import pytest
-from tests.conftest import app, get_session, override_db
 from fastapi.testclient import TestClient
 
+from app.main import app
+from app.core.db import get_session
+
+from tests.conftest import override_db
 
 @pytest.fixture
 def test_client():
