@@ -30,3 +30,4 @@ jobs:
     - name: Test with flake8 and pytest
       run: |
         python -m pytest
+        python -m flake8
