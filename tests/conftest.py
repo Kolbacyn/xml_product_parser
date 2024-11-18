@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 pytest_plugins = [
     'tests.fixtures.user',
-    # 'fixtures.data',
+    'tests.fixtures.data',
 ]
 
 TEST_DB = BASE_DIR / 'test.db'
