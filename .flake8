@@ -1,5 +1,6 @@
 [flake8]
 ignore = R502, R503, R504
+disable-noqa = True
 exclude = 
    migrations
    app/core/base.py
