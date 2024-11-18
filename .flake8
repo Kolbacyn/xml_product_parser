@@ -5,4 +5,5 @@ exclude =
    migrations
    app/core/base.py
    tests
+   conftest.py
    
